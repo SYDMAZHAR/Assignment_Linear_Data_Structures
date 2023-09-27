@@ -1,0 +1,239 @@
+#Q1. Find pairs in an array with a given sum:
+
+def find_pairs_with_sum(arr, target_sum):
+    pairs = []
+    seen = set()
+
+    for num in arr:
+        complement = target_sum - num
+        if complement in seen:
+            pairs.append((num, complement))
+        seen.add(num)
+
+    return pairs
+
+# Example usage:
+arr = [2, 4, 3, 5, 6, 1, 7]
+target_sum = 10
+result = find_pairs_with_sum(arr, target_sum)
+print(result)
+
+#Q2. Reverse an array in place:
+python
+Copy code
+def reverse_array_in_place(arr):
+    left = 0
+    right = len(arr) - 1
+
+    while left < right:
+        arr[left], arr[right] = arr[right], arr[left]
+        left += 1
+        right -= 1
+
+# Example usage:
+arr = [1, 2, 3, 4, 5]
+reverse_array_in_place(arr)
+print(arr)
+#Q3. Check if two strings are rotations of each other:
+python
+Copy code
+def are_rotations(str1, str2):
+    if len(str1) != len(str2):
+        return False
+
+    concatenated = str1 + str1
+    return str2 in concatenated
+
+# Example usage:
+str1 = "abcdef"
+str2 = "cdefab"
+result = are_rotations(str1, str2)
+print(result)
+#Q4. Find the first non-repeated character in a string:
+python
+Copy code
+def first_non_repeated_character(s):
+    char_count = {}
+    
+    for char in s:
+        if char in char_count:
+            char_count[char] += 1
+        else:
+            char_count[char] = 1
+
+    for char in s:
+        if char_count[char] == 1:
+            return char
+    return None
+
+# Example usage:
+s = "programming"
+result = first_non_repeated_character(s)
+print(result)
+#Q5. Tower of Hanoi algorithm:
+def tower_of_hanoi(n, source, auxiliary, target):
+    if n == 1:
+        print(f"Move disk 1 from {source} to {target}")
+        return
+    tower_of_hanoi(n - 1, source, target, auxiliary)
+    print(f"Move disk {n} from {source} to {target}")
+    tower_of_hanoi(n - 1, auxiliary, source, target)
+
+# Example usage:
+n = 3  # Number of disks
+tower_of_hanoi(n, 'A', 'B', 'C')
+
+#Q6. Convert postfix to prefix expression:
+def postfix_to_prefix(expression):
+    stack = []
+    operators = set(['+', '-', '*', '/'])
+
+    for token in expression:
+        if token not in operators:
+            stack.append(token)
+        else:
+            operand2 = stack.pop()
+            operand1 = stack.pop()
+            result = token + operand1 + operand2
+            stack.append(result)
+
+    return stack[0]
+
+# Example usage:
+postfix_expression = "23*5+"
+prefix_expression = postfix_to_prefix(postfix_expression)
+print(prefix_expression)
+
+#Q7. Convert prefix to infix expression:
+def is_operand(char):
+    return char.isalnum()
+
+def prefix_to_infix(expression):
+    stack = []
+
+    for char in expression[::-1]:
+        if is_operand(char):
+            stack.append(char)
+        else:
+            operand1 = stack.pop()
+            operand2 = stack.pop()
+            result = f"({operand1}{char}{operand2})"
+            stack.append(result)
+
+    return stack[0]
+
+# Example usage:
+prefix_expression = "+*23*45"
+infix_expression = prefix_to_infix(prefix_expression)
+print(infix_expression)
+
+#Q8. Check if all brackets are closed:
+python
+Copy code
+def are_brackets_balanced(code):
+    stack = []
+    bracket_pairs = {')': '(', '}': '{', ']': '['}
+    
+    for char in code:
+        if char in '({[':
+            stack.append(char)
+        elif char in ')}]':
+            if not stack or stack.pop() != bracket_pairs[char]:
+                return False
+    
+    return not stack
+
+# Example usage:
+code_snippet = "{(a + b) * [c - d]}"
+result = are_brackets_balanced(code_snippet)
+print(result)
+#Q9. Reverse a stack:
+class Stack:
+    def __init__(self):
+        self.items = []
+
+    def is_empty(self):
+        return len(self.items) == 0
+
+    def push(self, item):
+        self.items.append(item)
+
+    def pop(self):
+        if not self.is_empty():
+            return self.items.pop()
+        else:
+            return None
+
+    def peek(self):
+        if not self.is_empty():
+            return self.items[-1]
+        else:
+            return None
+
+    def size(self):
+        return len(self.items)
+
+def reverse_stack(stack):
+    if stack.is_empty():
+        return
+
+    # Pop all elements from the original stack and store them in a temporary stack
+    temp_stack = Stack()
+    while not stack.is_empty():
+        temp_stack.push(stack.pop())
+
+    # Pop elements from the temporary stack and push them back into the original stack
+    while not temp_stack.is_empty():
+        stack.push(temp_stack.pop())
+
+# Example usage:
+stack = Stack()
+stack.push(1)
+stack.push(2)
+stack.push(3)
+stack.push(4)
+
+print("Original Stack:")
+while not stack.is_empty():
+    print(stack.pop(), end=" ")
+
+reverse_stack(stack)
+
+print("\nReversed Stack:")
+while not stack.is_empty():
+    print(stack.pop(), end=" ")
+
+#Q10. Find the smallest number using a stack:
+python
+Copy code
+class MinStack:
+    def __init__(self):
+        self.stack = []
+        self.min_stack = []
+
+    def push(self, x):
+        self.stack.append(x)
+        if not self.min_stack or x <= self.min_stack[-1]:
+            self.min_stack.append(x)
+
+    def pop(self):
+        if self.stack:
+            if self.stack[-1] == self.min_stack[-1]:
+                self.min_stack.pop()
+            self.stack.pop()
+
+    def top(self):
+        if self.stack:
+            return self.stack[-1]
+
+    def get_min(self):
+        if self.min_stack:
+            return self.min_stack[-1]
+
+# Example usage:
+stack = MinStack()
+stack.push(3)
+stack.push(2)
+stack.push(5)
+stack.push(1)
+print(stack.get_min())  # Output: 1
